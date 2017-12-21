@@ -20,7 +20,13 @@ class NodeFlvSession extends EventEmitter {
     this.bp.on('error', (e) => {
 
     });
-    this.allow_origin = config.http.allow_origin == undefined ? '*' : config.http.allow_origin;
+
+    if ((config.http && !!config.http.allow_origin) || (config.https && !!config.https.allow_origin)) {
+      this.allow_origin = '*';
+    } else {
+      this.allow_origin = false;
+    }
+
     this.isPublisher = false;
     this.playStreamPath = '';
     this.playArgs = null;
